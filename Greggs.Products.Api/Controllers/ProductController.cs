@@ -8,7 +8,8 @@ using Microsoft.Extensions.Logging;
 namespace Greggs.Products.Api.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[ApiVersion( "1.0" )]
+[Route( "api/v{version:apiVersion}/Product" )]
 public class ProductController : ControllerBase
 {
     private static readonly string[] Products = new[]
@@ -24,17 +25,17 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<Product> Get(int pageStart = 0, int pageSize = 5)
+    public IEnumerable<Product> Get( int pageStart = 0, int pageSize = 5 )
     {
-        if (pageSize > Products.Length)
+        if ( pageSize > Products.Length )
             pageSize = Products.Length;
 
         var rng = new Random();
-        return Enumerable.Range(1, pageSize).Select(index => new Product
-            {
-                PriceInPounds = rng.Next(0, 10),
-                Name = Products[rng.Next(Products.Length)]
-            })
+        return Enumerable.Range( 1, pageSize ).Select( index => new Product
+        {
+            PriceInPounds = rng.Next( 0, 10 ),
+            Name = Products[rng.Next( Products.Length )]
+        } )
             .ToArray();
     }
 }
